@@ -7,15 +7,16 @@ namespace DockerS3DynamoDBTest
     public class UnitTest1
     {
         private DynamoDbManager _dynamoDbManager;
+        private S3Manager _s3Manager;
         private string _tableName = "Test1";
 
         public UnitTest1 () {
             _dynamoDbManager = new DynamoDbManager("fake", "fake", 
                 Amazon.RegionEndpoint.EUWest1, "http://localhost:8000");
-            
+
+            _s3Manager = new S3Manager("rootname", "accesskey", 
+                Amazon.RegionEndpoint.EUWest1, "http://localhost:9000");
         }
-
-
 
         [Fact]
         public async void DynamoDBTest()
@@ -46,6 +47,16 @@ namespace DockerS3DynamoDBTest
 
             var responseGet = await _dynamoDbManager.Client.GetItemAsync(requestGet);
             responseGet.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async void S3Test()
+        {
+            var bucketName = "mybucket";
+            await _s3Manager.CreateBucketIfNotExists(bucketName);
+            var result =await _s3Manager.UploadStringAsync(bucketName, "file1", "{}");
+            result.Should().NotBeNull();
+            result.HttpStatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
     }
 }

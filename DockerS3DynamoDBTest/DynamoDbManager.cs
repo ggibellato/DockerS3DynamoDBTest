@@ -9,7 +9,8 @@ namespace DockerS3DynamoDBTest
 
         private readonly AmazonDynamoDBClient _client;
 
-        public DynamoDbManager(string accessKeyId, string secretAccessKey, Amazon.RegionEndpoint region, string serviceUrl)
+        public DynamoDbManager(string accessKeyId, string secretAccessKey, 
+            Amazon.RegionEndpoint region, string serviceUrl)
         {
             AmazonDynamoDBConfig config = new AmazonDynamoDBConfig
             {
@@ -17,7 +18,7 @@ namespace DockerS3DynamoDBTest
             };
             if(!string.IsNullOrWhiteSpace(serviceUrl))
             {
-                config.ServiceURL = "http://localhost:8000";
+                config.ServiceURL = serviceUrl;
             }
             _client = new AmazonDynamoDBClient(accessKeyId, secretAccessKey, config);
         }
