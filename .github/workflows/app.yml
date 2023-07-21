@@ -33,7 +33,7 @@ jobs:
           docker ps
           aws --version
           aws dynamodb list-tables --endpoint-url http://localhost:8000
-          curl -f -v http://localhost:9000/minio/health/live
+          curl -f -v http://127.0.0.1:9000/minio/health/live
       - name: run test
         run: dotnet test -ds:true
       - name: Stop docker
