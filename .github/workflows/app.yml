@@ -4,6 +4,8 @@ defaults:
   run:
     shell: bash
 
+on: push
+
 jobs:
   Build and Test:
     name: Build and Test
