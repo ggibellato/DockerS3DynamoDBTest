@@ -7,7 +7,7 @@ defaults:
 on: push
 
 jobs:
-  Build and Test:
+  Build_Test:
     name: Build and Test
     runs-on: ubuntu-latest
     permissions:
