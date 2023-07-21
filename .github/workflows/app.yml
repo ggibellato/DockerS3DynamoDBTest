@@ -1,5 +1,10 @@
 name: Test Docker S3 and DynamoDB
 
+env:
+  AWS_DEFAULT_REGION: eu-west-1
+  AWS_SECRET_ACCESS_KEY: fake
+  AWS_ACCESS_KEY_ID: fake
+
 defaults:
   run:
     shell: bash
