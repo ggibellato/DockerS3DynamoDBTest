@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  dynamodb:
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+
+  s3:
+    image: "minio/minio"
+    container_name: s3
+    ports:
+      - "9000:9000"      
+      - "9090:9090"
+    command: server /data --console-address ":9090"
+    environment:
+      - MINIO_ROOT=secret
+      - MINIO_ROOT_PASSWORD=accesskey
+      - MINIO_ACCESS_KEY=access
+      - MINIO_SECRET_KEY=secretkey
+    volumes:
+      - ./minio:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 1s
+      retries: 3

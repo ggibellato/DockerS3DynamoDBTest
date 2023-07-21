@@ -1,0 +1,5 @@
+minio/
+.vs/
+
+DockerS3DynamoDBTest/obj/*
+DockerS3DynamoDBTest/bin/*
