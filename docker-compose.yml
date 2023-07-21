@@ -12,7 +12,7 @@ services:
     ports:
       - "9000:9000"      
       - "9090:9090"
-    command: server /data --console-address ":9090"
+    command: server /data --console-address ":9090" --address ":9000"
     environment:
       - MINIO_ROOT=secret
       - MINIO_ROOT_PASSWORD=accesskey
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./minio:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 10s
       timeout: 5s
       retries: 3
