@@ -1,11 +1,18 @@
 name: Test Docker S3 and DynamoDB
 
+env:
+  AWS_DEFAULT_REGION: eu-west-1
+  AWS_SECRET_ACCESS_KEY: fake
+  AWS_ACCESS_KEY_ID: fake
+
 defaults:
   run:
     shell: bash
 
+on: push
+
 jobs:
-  Build and Test:
+  Build_Test:
     name: Build and Test
     runs-on: ubuntu-latest
     permissions:
@@ -14,11 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up .NET Core
-      - uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
-      - name: Build
-        run: dotnet build DockerS3DynamoDBTest.sln
       - name: Start docker
         run: docker-compose up -d
       - name: Check containers
@@ -27,6 +32,8 @@ jobs:
           aws --version
           aws dynamodb list-tables --endpoint-url http://localhost:8000
           curl -f -v http://localhost:9000/minio/health/live
+      - name: Build
+        run: dotnet build DockerS3DynamoDBTest.sln
       - name: run test
         run: dotnet test -ds:true
       - name: Stop docker
