@@ -14,6 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up .NET Core
-      - uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
+      - name: Build
+        run: dotnet build DockerS3DynamoDBTest.sln
+      - name: Start docker
+        run: docker-compose up -d
+      - name: Check containers
+        run: |
+          docker ps
+          aws --version
+          aws dynamodb list-tables --endpoint-url http://localhost:8000
+          curl -f -v http://localhost:9000/minio/health/live
+      - name: run test
+        run: dotnet test -ds:true
+      - name: Stop docker
+        run: docker-compose down
